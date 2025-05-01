@@ -19,7 +19,6 @@ export default function LoginPage() {
         catch(e){
             toast.error(e.response.data.message)
         }
-
     }
 
     return (
