@@ -75,7 +75,7 @@ export default function AdminProductsPage() {
 									<td>{item.productId}</td>
 									<td>{item.name}</td>
 									<td>
-										<img src={item.images[0]} className="w-[50px] h-[50px]" />
+										<img src={item.image[0]} className="w-[50px] h-[50px]" />
 									</td>
 									<td>{item.labelledPrice}</td>
 									<td>{item.price}</td>
@@ -91,8 +91,18 @@ export default function AdminProductsPage() {
 											<FaEdit
 												onClick={() => {
 													navigate("/admin/edit-product", {
-														state: item,
+														state: {
+															productId: item.productId,
+															name: item.name,
+															altNames: item.altNames,
+															description: item.description,
+															image: item.image,
+															labelledPrice: item.labelledPrice,
+															price: item.price,
+															stock: item.stock,
+														},
 													});
+
 												}}
 												className="text-[20px] text-blue-500 mx-2 cursor-pointer"
 											/>

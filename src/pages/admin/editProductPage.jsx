@@ -1,20 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import mediaUpload from "../../utils/mediaUpload";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+
 
 export default function EditProductPage() {
-    const location = useLocation()
-	const [productId, setProductId] = useState(location.state.productId);
-	const [name, setName] = useState(location.state.name);
-	const [altNames, setAltNames] = useState(location.state.altNames.join(","));
-	const [description, setDescription] = useState(location.state.description);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+	
+console.log(location.state);
+
+	const [productId, setProductId] = useState(location.state?.productId);
+	const [name, setName] = useState(location.state?.name);
+const [altNames, setAltNames] = useState(
+  Array.isArray(location.state?.altNames) ? location.state.altNames.join(",") : ""
+);
+	const [description, setDescription] = useState(location.state?.description);
 	const [images, setImages] = useState([]);
-	const [labelledPrice, setLabelledPrice] = useState(location.state.labelledPrice);
-	const [price, setPrice] = useState(location.state.price);
-	const [stock, setStock] = useState(location.state.stock);
-    const navigate = useNavigate()
+	const [labelledPrice, setLabelledPrice] = useState(location.state?.labelledPrice);
+	const [price, setPrice] = useState(location.state?.price);
+	const [stock, setStock] = useState(location.state?.stock);
+
 
 	async function updateProduct() {
 
@@ -36,7 +45,6 @@ export default function EditProductPage() {
                 imageUrls = await Promise.all(promisesArray);
             }
 		    
-			console.log(imageUrls);
 
             const altNamesArray = altNames.split(",")
 
