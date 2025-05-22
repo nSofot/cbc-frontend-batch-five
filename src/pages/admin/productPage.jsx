@@ -1,25 +1,34 @@
 import { useEffect, useState } from "react";
-import { sampleProducts } from "../../assets/sampleData";
+// import { sampleProducts } from "../../assets/sampleData";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
+import LoadingSpinner from "../../components/loadingSpinner";
 
 export default function AdminProductsPage() {
-	const [products, setProducts] = useState(sampleProducts);
+	const [products, setProducts] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
+
+
+	const location = useLocation();
+
 	useEffect(() => {
-		if (isLoading == true) {
-			axios
-				.get(import.meta.env.VITE_BACKEND_URL + "/api/products")
-				.then((res) => {
-					console.log(res.data);
-					setProducts(res.data);
-					setIsLoading(false);
-				});
-		}
-	}, [isLoading]);
+
+		window.scrollTo(0, 0);
+		
+		setIsLoading(true);
+		axios
+			.get(import.meta.env.VITE_BACKEND_URL + "/api/products")
+			.then((res) => {
+				setProducts(res.data);
+				setIsLoading(false);
+			});
+	}, [location]);
+
+
 
 	function deleteProduct(productId) {
 		const token = localStorage.getItem("token");
@@ -41,6 +50,7 @@ export default function AdminProductsPage() {
 				toast.error(e.response.data.message);
 			});
 	}
+
 
 	return (
 		<div className="w-full h-full  max-h-full overflow-y-scroll  relative">
@@ -94,7 +104,7 @@ export default function AdminProductsPage() {
 														state: {
 															productId: item.productId,
 															name: item.name,
-															altNames: item.altNames,
+															altNames: item.altName,
 															description: item.description,
 															image: item.image,
 															labelledPrice: item.labelledPrice,

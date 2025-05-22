@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 
-// ❗ Use public (anon) key, not service role key
 const SUPABASE_URL = "https://fqchfixofctbyywmfdnr.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxY2hmaXhvZmN0Ynl5d21mZG5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MjUzMTUsImV4cCI6MjA2MjIwMTMxNX0.dNAuRXo8ekU1f97O6M4J4B4QIKpwoXLaIhbdRMYYYTQ";
 
@@ -25,10 +24,15 @@ export default async function mediaUpload(file) {
         throw new Error("Upload failed: " + error.message);
     }
 
-    const { data: publicData } = supabase
+    // Make sure the uploaded file has a public URL
+    const { data: publicData, error: publicUrlError } = supabase
         .storage
         .from("images")
         .getPublicUrl(fileName);
+
+    if (publicUrlError || !publicData?.publicUrl) {
+        throw new Error("Failed to get public URL");
+    }
 
     return publicData.publicUrl;
 }

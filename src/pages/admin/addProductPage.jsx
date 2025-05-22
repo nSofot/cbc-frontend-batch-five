@@ -52,7 +52,7 @@ export default function AddProductPage() {
                 stock: stock
             }
 
-            axios.post(import.meta.env.VITE_BACKEND_URL + "/api/product/", product, {
+            axios.post(import.meta.env.VITE_BACKEND_URL + "/api/products/", product, {
                 headers: {
                     Authorization: "Bearer "+token
                 }

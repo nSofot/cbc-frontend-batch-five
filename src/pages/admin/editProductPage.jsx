@@ -1,73 +1,82 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import mediaUpload from "../../utils/mediaUpload";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 
 export default function EditProductPage() {
-    const location = useLocation();
-    const navigate = useNavigate();
+	const location = useLocation();
+	const navigate = useNavigate();
 
-	
-console.log(location.state);
 
-	const [productId, setProductId] = useState(location.state?.productId);
-	const [name, setName] = useState(location.state?.name);
-const [altNames, setAltNames] = useState(
-  Array.isArray(location.state?.altNames) ? location.state.altNames.join(",") : ""
-);
-	const [description, setDescription] = useState(location.state?.description);
-	const [images, setImages] = useState([]);
-	const [labelledPrice, setLabelledPrice] = useState(location.state?.labelledPrice);
-	const [price, setPrice] = useState(location.state?.price);
-	const [stock, setStock] = useState(location.state?.stock);
+	const [productId, setProductId] = useState();
+	const [name, setName] = useState();
+	const [altNames, setAltNames] = useState();
+	const [description, setDescription] = useState();
+	const [image, setImage] = useState([]);
+	const [labelledPrice, setLabelledPrice] = useState();
+	const [price, setPrice] = useState();
+	const [stock, setStock] = useState();
 
+	useEffect(() => {
+		if (location.state) {
+			setProductId(location.state.productId || "");
+			setName(location.state.name || "");
+			setAltNames(Array.isArray(location.state.altNames) ? location.state.altNames.join(",") : "");
+			setDescription(location.state.description || "");
+			setLabelledPrice(location.state.labelledPrice || "");
+			setPrice(location.state.price || "");
+			setStock(location.state.stock || "");
+		}
+	}, [location.state]);
 
 	async function updateProduct() {
 
-        const token = localStorage.getItem("token")
-        if(token == null){
-            toast.error("Please login first")
-            return
-        }
+		const token = localStorage.getItem("token")
+		if (token == null) {
+			toast.error("Please login first")
+			return
+		}
 
-		let imageUrls = location.state.images;
+		let imageUrls = location.state?.image || [];
 
 		const promisesArray = [];
 
-		for (let i = 0; i < images.length; i++) {
-			promisesArray[i] = mediaUpload(images[i]);
+		for (let i = 0; i < image.length; i++) {
+			promisesArray[i] = mediaUpload(image[i]);
 		}
 		try {
-            if(images.length > 0){
-                imageUrls = await Promise.all(promisesArray);
-            }
-		    
+			const isNewImagesSelected = image.length > 0;
+			if (isNewImagesSelected) {
+				imageUrls = await Promise.all(promisesArray);
+			}
 
-            const altNamesArray = altNames.split(",")
 
-            const product = {
-                productId : productId,
-                name : name,
-                altNames : altNamesArray,
-                description : description,
-                images : imageUrls,
-                labelledPrice : labelledPrice,
-                price : price,
-                stock : stock,
-            }
-            axios.put(import.meta.env.VITE_BACKEND_URL + "/api/products/"+productId, product , {
-                headers : {
-                    "Authorization" : "Bearer "+token
-                }
-            }).then(() => {
-                toast.success("Product updated successfully")
-                navigate("/admin/products")
-            }).catch((e) => {
-                toast.error(e.response.data.message)
-            })
+
+			const altNamesArray = altNames.split(",")
+
+			const product = {
+				productId: productId,
+				name: name,
+				altNames: altNamesArray,
+				description: description,
+				image: imageUrls,
+				labelledPrice: labelledPrice,
+				price: price,
+				stock: stock,
+			}
+
+			axios.put(import.meta.env.VITE_BACKEND_URL + "/api/products/" + productId, product, {
+				headers: {
+					"Authorization": "Bearer " + token
+				}
+			}).then(() => {
+				toast.success("Product updated successfully")
+				navigate("/admin/products")
+			}).catch((e) => {
+				toast.error(e.response.data.message)
+			})
 
 		} catch (e) {
 			console.log(e);
@@ -75,10 +84,10 @@ const [altNames, setAltNames] = useState(
 	}
 	return (
 		<div className="w-full h-full flex flex-col justify-center items-center">
-            <h1 className="text-3xl font-bold mb-4">Edit Product</h1>
+			<h1 className="text-3xl font-bold mb-4">Edit Product</h1>
 			<input
 				type="text"
-                disabled
+				disabled
 				placeholder="Product ID"
 				className="input input-bordered w-full max-w-xs"
 				value={productId}
@@ -115,11 +124,12 @@ const [altNames, setAltNames] = useState(
 			/>
 			<input
 				type="file"
-				placeholder="Images"
+				placeholder="Image"
 				multiple
 				className="input input-bordered w-full max-w-xs"
 				onChange={(e) => {
-					setImages(e.target.files);
+					// setImages(e.target.files);
+					setImage(Array.from(e.target.files));
 				}}
 			/>
 			<input
