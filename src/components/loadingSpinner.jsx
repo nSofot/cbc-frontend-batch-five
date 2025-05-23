@@ -1,10 +1,8 @@
-// Spinner.jsx
-const LoadingSpinner = () => {
+export default function LoadingSpinner() {
+    
     return (
         <div className="w-full h-full flex justify-center items-center">
-            <div className="w-[70px] h-[70px] border-[5px] border-gray-300 border-t-blue-900 rounded-full animate-spin" />
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-accent border-secondary"></div>
         </div>
     );
 };
-
-export default LoadingSpinner;

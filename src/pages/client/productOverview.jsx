@@ -2,6 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import ImageSlider from "../../components/imageSlider";
+import LoadingSpinner from "../../components/loadingSpinner";
+import { addToCart, getCart } from "../../utils/cart";
 
 export default function ProductOverview() {
     const params = useParams();
@@ -28,9 +31,52 @@ export default function ProductOverview() {
     , []);
 
     return (
-        <div className="font-main">
-            <h1>ProductOverview {JSON.stringify(product)} </h1>
-        </div>
+        <>
+            {status == "success" && (
+                <div className="w-full h-[90%] flex">
+                    <div className="w-[50%] h-full flex justify-center items-center">
+                        <ImageSlider images={product.image}/>
+                    </div>
+                    <div className="w-[50%] h-full flex justify-center items-center">
+                        <div className="w-[400px] h-[400px] flex flex-col item-center">
+                            <h1 className="w-full text-center text-4xl font-semibold text-secondary">{product.name}
+                                {
+                                    product.altName.map((altName, index) => {
+                                        return (
+                                            <span key={index} className="w-full text-center text-4xl font-semibold text-gray-600">{" | " + altName}</span>
+                                        )
+                                    })
+                                }
+                            </h1>
+                            {/* product Id*/}
+                            <h1 className="w-full text-center my-2 text-md font-semibold text-gray-600">{product.productId}</h1>
+                            {/* product description*/}
+                            <h1 className="w-full text-center my-2 text-md font-semibold text-gray-600">{product.description}</h1>
+                            {/* product price*/}
+                            {
+                                product.labelledPrice > product.price ? 
+                                <div>
+                                    <span className="text-4xl text-gray-500 line-through">Rs.{product.labelledPrice.toFixed(2)}</span>
+                                    <span className="text-4xl ">{" | Rs." + product.price.toFixed(2)}</span>
+                                </div>
+                                :<span className="text-4xl ">{" Rs." + product.price.toFixed(2)}</span>
+                            }
+                            <div className="w-full flex justify-center item-center mt-4">
+                                <button className="w-full my-2 mx-4 cursor-pointer bg-green-600 text-white py-2 rounded-md">Buy Now</button>
+                                <button className="w-full my-2 mx-4 cursor-pointer bg-blue-600 text-white py-2 rounded-md" onClick={()=>{
+                                    console.log(getCart())
+                                    addToCart(product, 1)
+                                    console.log(getCart())
+                                }}>Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {
+                status == "loading" && <LoadingSpinner/>
+            }
+        </>
     );
 }
 
