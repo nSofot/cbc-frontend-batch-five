@@ -53,77 +53,86 @@ export default function AdminProductsPage() {
 
 
 	return (
-		<div className="w-full h-full  max-h-full overflow-y-scroll  relative">
-			<Link
-				to="/admin/add-product"
-				className="absolute text-xl cursor-pointer bottom-5 right-5 bg-green-500 text-white font-bold py-2 px-4 rounded text-center flex justify-center items-center"
-			>
-				+
-			</Link>
-			{
-			isLoading ?
-				<div className="w-full h-full flex justify-center items-center ">
-					<div className="w-[70px] h-[70px] border-[5px] border-gray-300 border-t-blue-900 rounded-full animate-spin">
-					</div>
-				</div> :
-				<table className="w-full text-center">
-					<thead>
-						<tr>
-							<th>Product ID</th>
-							<th>Name</th>
-							<th>Image</th>
-							<th>Labelled Price</th>
-							<th>Price</th>
-							<th>Stock</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{products.map((item, index) => {
-							return (
-								<tr key={index}>
-									<td>{item.productId}</td>
-									<td>{item.name}</td>
-									<td>
-										<img src={item.image[0]} className="w-[50px] h-[50px]" />
-									</td>
-									<td>{item.labelledPrice}</td>
-									<td>{item.price}</td>
-									<td>{item.stock}</td>
-									<td>
-										<div className="flex justify-center items-center w-full">
-											<FaTrash
-												className="text-[20px] text-red-500 mx-2 cursor-pointer"
-												onClick={() => {
-													deleteProduct(item.productId);
-												}}
-											/>
-											<FaEdit
-												onClick={() => {
-													navigate("/admin/edit-product", {
-														state: {
-															productId: item.productId,
-															name: item.name,
-															altNames: item.altName,
-															description: item.description,
-															image: item.image,
-															labelledPrice: item.labelledPrice,
-															price: item.price,
-															stock: item.stock,
-														},
-													});
+		<div className="w-full h-full flex flex-col p-3">
 
-												}}
-												className="text-[20px] text-blue-500 mx-2 cursor-pointer"
-											/>
-										</div>
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>				
-			}
+            <div className='w-full bg-white rounded-md shadow-xl'>
+                <div className='w-full h-12 flex justify-between items-center pl-3 pr-3'>
+                    <div className='w-40% h-full flex flex-col items-start'>
+                        <h1 className='text-lg text-#343a40 font-semibold'>Products</h1>
+                        <p className='text-xs'>Manage products</p>
+                    </div>
+
+                    <Link
+                        to="/dashboard/add-dispenser"
+                        className="text-sm cursor-pointer bg-green-600 shadow-xl text-white py-1 px-4 rounded-md text-center flex justify-center items-center hover:bg-green-700">
+                        +  Add new product
+                    </Link> 
+                </div>
+            </div>			
+
+
+			<div className="w-full h-screen max-h-full bg-white rounded-md shadow-md max-h-full overflow-y-scroll p-3 mt-2">
+				{isLoading ? <LoadingSpinner /> :
+					<table className="w-full text-sm text-left p-3">
+						<thead className="h-7 w-full text-white text-sm font-normal bg-green-600 ml-3">
+							<tr>
+								<th>Image</th>
+								<th>Product ID</th>
+								<th>Name</th>
+								<th>Labelled Price</th>
+								<th>Price</th>
+								<th>Stock</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody className="divide-y divide-gray-200">
+							{products.map((item, index) => {
+								return (
+									<tr key={index} className="h-15 hover:bg-green-100 cursor-pointer">
+										<td>
+											<img src={item.image[0]} className="w-[50px] h-[50px] rounded-md" />
+										</td>
+										<td>{item.productId}</td>
+										<td>{item.name}</td>
+										<td>{item.labelledPrice}</td>
+										<td>{item.price}</td>
+										<td>{item.stock}</td>
+										<td>
+											<div className="flex justify-center items-center w-full">
+												<FaTrash
+													className="text-[20px] text-red-500 mx-2 cursor-pointer"
+													onClick={() => {
+														deleteProduct(item.productId);
+													}}
+												/>
+												<FaEdit
+													onClick={() => {
+														navigate("/admin/edit-product", {
+															state: {
+																productId: item.productId,
+																name: item.name,
+																altNames: item.altName,
+																description: item.description,
+																image: item.image,
+																labelledPrice: item.labelledPrice,
+																price: item.price,
+																stock: item.stock,
+															},
+														});
+
+													}}
+													className="text-[20px] text-blue-500 mx-2 cursor-pointer"
+												/>
+											</div>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>				
+				}
+			</div>
 		</div>
+
 	);
 }
