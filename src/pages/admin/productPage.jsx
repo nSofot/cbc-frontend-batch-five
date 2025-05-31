@@ -55,7 +55,7 @@ export default function AdminProductsPage() {
 	return (
 		<div className="w-full h-full flex flex-col p-3">
 
-            <div className='w-full bg-white rounded-md shadow-xl'>
+            <div className='w-full'>
                 <div className='w-full h-12 flex justify-between items-center pl-3 pr-3'>
                     <div className='w-40% h-full flex flex-col items-start'>
                         <h1 className='text-lg text-#343a40 font-semibold'>Products</h1>
@@ -63,7 +63,7 @@ export default function AdminProductsPage() {
                     </div>
 
                     <Link
-                        to="/dashboard/add-dispenser"
+                        to="/admin/add-product"
                         className="text-sm cursor-pointer bg-green-600 shadow-xl text-white py-1 px-4 rounded-md text-center flex justify-center items-center hover:bg-green-700">
                         +  Add new product
                     </Link> 
