@@ -69,7 +69,7 @@ export default function EditProductPage() {
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-100 to-gray-200 p-6">
-			<div className="bg-white w-full max-w-2xl p-8 rounded-2xl shadow-2xl">
+			<div className="bg-white w-full max-w-2xl p-1 rounded-2xl shadow-2xl">
 				<h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Edit Product</h2>
 
 				<div className="grid grid-cols-1 gap-5">
