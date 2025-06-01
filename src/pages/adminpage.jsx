@@ -1,6 +1,6 @@
 import { Route, Routes, Link, useLocation } from "react-router-dom";
 
-import AdminProductsPage from "./admin/productPage";
+import AdminProductsPage from "./admin/adminProductPage";
 import AddProductPage from "./admin/addProductPage";
 import EditProductPage from "./admin/editProductPage";
 import AdminOrdersPage from "./admin/adminOrdersPage";
