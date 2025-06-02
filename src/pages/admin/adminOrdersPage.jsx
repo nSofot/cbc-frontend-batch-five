@@ -107,62 +107,115 @@ export default function AdminOrdersPage() {
 				isOpen={isModalOpen}
 				onRequestClose={() => setIsModalOpen(false)}
 				contentLabel="Order Details"
-				className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-20 overflow-y-auto max-h-[80vh]"
+				// className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-20 overflow-y-auto max-h-[80vh]"
+				className="max-w-4xl max-h-[150vh] mx-auto bg-white p-6 rounded-lg shadow-lg mt-10 border border-gray-400"
 			>
 				{activeOrder && (
-					<div>
-						<h2 className="text-xl font-bold text-gray-800 mb-4">
-							Order #{activeOrder.orderId}
-						</h2>
-						<p className="text-gray-600 mb-2">Date: {formatDate(activeOrder.createdAt)}</p>
-						<p className="text-gray-600 mb-2">Customer: {activeOrder.name}</p>
-						<p className="text-gray-600 mb-2">Email: {activeOrder.email}</p>
-						<p className="text-gray-600 mb-2">Phone: {activeOrder.phone}</p>
-						<p className="text-gray-600 mb-2">Address: {activeOrder.address}</p>
-						<p className="text-gray-600 mb-4 font-medium">
-							Total: {formatCurrency(activeOrder.total)} (Labelled: {formatCurrency(activeOrder.labelledTotal)})
-						</p>
-						<h3 className="text-lg font-semibold text-purple-700 mb-3">Products</h3>
-						<div className="space-y-4">
-							{activeOrder.products.map((item, i) => (
-								<div key={i} className="flex items-start gap-4 border p-3 rounded-md">
-									<img
-										src={item.productInfo.images[0]}
-										alt={item.productInfo.name}
-										className="w-24 h-24 object-cover rounded"
-									/>
-									<div>
-										<h4 className="font-semibold text-gray-800">
-											{item.productInfo.name}
-										</h4>
-										<p className="text-gray-600 text-sm italic">
-											{item.productInfo.altNames.join(", ")}
-										</p>
-										<p className="text-gray-700 mt-1 text-sm">
-											Qty: {item.quantity} | Price: {formatCurrency(item.productInfo.price)} | Labelled: {formatCurrency(item.productInfo.labelledPrice)}
-										</p>
-										<p className="text-gray-500 mt-1 text-xs">
-											{item.productInfo.description}
-										</p>
-									</div>
+					<div className="space-y-4">
+						<div className="w-full flex justify-between">
+							<div className="w-[40%]">
+								<h2 className="text-2xl font-bold text-gray-800 mb-1">
+									Order #{activeOrder.orderId}
+								</h2>
+								<p className="text-sm text-gray-500">
+									Placed on {formatDate(activeOrder.createdAt)}
+								</p>
+								<div className="mt-2">
+									<span
+										className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${
+											activeOrder.status.toLowerCase() === "delivered"
+												? "bg-green-100 text-green-700"
+											: activeOrder.status.toLowerCase() === "pending"
+											? "bg-yellow-100 text-yellow-700"
+											: "bg-gray-100 text-gray-700"
+										}`}
+									>
+										Status: {activeOrder.status}
+									</span>
 								</div>
-							))}
-							<button
-								className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-								onClick={() => setIsModalOpen(false)}
-							>
-								Close
-							</button>
-							<button
-								className="ml-6 mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-								onClick={() => window.print()}
-							>
-								Print
-							</button>
+							</div>
+
+							{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700"> */}
+								<div className="w-[30%]">
+									<h3 className="font-semibold text-gray-900">Customer Info</h3>
+									<p className="text-sm">Name: {activeOrder.name}</p>
+									<p className="text-sm">Email: {activeOrder.email}</p>
+									<p className="text-sm">Phone: {activeOrder.phone}</p>
+								</div>
+
+								<div className="w-[30%]">
+									<h3 className="font-semibold text-gray-900">Shipping Address</h3>
+									<p className="text-sm">{activeOrder.address}</p>
+								</div>
+							{/* </div> */}
+
 						</div>
+
+						<div className="w-full h-[300px] bg-gray-100 border-t px-6 pt-4 overflow-y-auto">
+							<h3 className="text-lg font-semibold text-purple-700 mb-3">Products</h3>
+							<div className="space-y-2">
+								{activeOrder.products.map((item, i) => (
+									<div
+										key={i}
+										className="flex flex-col md:flex-row items-start gap-4 border py-2 px-4 rounded-md"
+									>
+										<img
+											src={item.productInfo.images[0]}
+											alt={item.productInfo.name}
+											className="w-20 h-20 mt-1 object-cover rounded"
+										/>
+										<div className="flex-1">
+											<h4 className="font-semibold text-gray-800 text-base">
+												{item.productInfo.name}
+											</h4>
+											<p className="text-gray-600 text-sm italic mb-1">
+												{item.productInfo.altNames.join(", ")}
+											</p>
+											<p className="text-gray-700 text-sm">
+												Qty: {item.quantity} | Price:{" "}
+												{formatCurrency(item.productInfo.price)} | Labelled:{" "}
+												{formatCurrency(item.productInfo.labelledPrice)}
+											</p>
+											<p className="text-gray-500 text-xs mt-1">
+												{item.productInfo.description}
+											</p>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+
+						<div className="w-full flex justify-between">
+
+							<div className="flex justify-end gap-4 pt-4 sticky bottom-0 bg-white z-10">
+								<button
+									className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded"
+									onClick={() => setIsModalOpen(false)}
+								>
+									Close
+								</button>
+								<button
+									className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded"
+									onClick={() => window.print()}
+								>
+									Print
+								</button>
+							</div>
+
+							<div className="pr-4 text-right">
+								<p className="text-lg font-semibold text-gray-800">
+									Total: {formatCurrency(activeOrder.total)}
+								</p>
+								<p className="text-sm text-gray-500">
+									Labelled Total: {formatCurrency(activeOrder.labelledTotal)}
+								</p>
+							</div>
+						</div>
+
 					</div>
 				)}
 			</Modal>
+
 		</div>
 	);
 }
