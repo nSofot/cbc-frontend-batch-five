@@ -36,9 +36,11 @@ export function addToCart(product, qty){
             productId: product.productId,
             name: product.name,
             image: product.image,
-            labelledPrice: product.labelledPrice,
+            altName: product.altName,
+            description: product.description,
             price: product.price,
-            qty: qty
+            labelledPrice: product.labelledPrice,
+            qty: 1,
         }
     }
     else{

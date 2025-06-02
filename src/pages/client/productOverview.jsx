@@ -71,6 +71,8 @@ export default function ProductOverview() {
 														productId: product.productId,
 														name: product.name,
 														image: product.image,
+                                                        altName: product.altName,
+                                                        description: product.description,
 														price: product.price,
 														labelledPrice: product.labelledPrice,
 														qty: 1,
