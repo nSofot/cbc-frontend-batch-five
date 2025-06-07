@@ -106,25 +106,25 @@ export default function CheckOutPage() {
     };
 
     return (
-        <div className="bg-gray-200 w-full h-full flex justify-between items-center p-4">
+        <div className="bg-gray-200 w-[95%] md:w-full md:h-full flex flex-col md:flex-row justify-between items-center p-1 md:p-4">
             {/* Cart Section */}
-            <div className="bg-gray-100 w-[65%] h-full flex flex-col rounded-md p-6 overflow-y-scroll">
+            <div className="bg-gray-100 w-full md:w-[65%] h-full flex flex-col rounded-md p-1 md:p-6 md:overflow-y-scroll">
                
                 {cart.map((item, index) => (
-                    <div key={item.productId || index} className="w-full h-[115px] bg-white my-1 rounded-md flex justify-between items-center p-2">
+                    <div key={item.productId || index} className="w-full h-full md:h-[115px] bg-white my-1 rounded-md flex flex-col md:flex-row md:justify-between items-center p-2">
                         <div className="w-[15%] h-full ml-4">
                             <img src={item.image[0]} alt={item.image[0]} className="w-[100px] h-[100px] object-cover rounded-md" />
                         </div>
 
-                        <div className="w-[65%] h-full flex flex-col justify-start items-start">
-                            <h1 className="text-1xl text-secondary font-semibold">{item.name}</h1>
+                        <div className="w-full md:w-[65%] h-full flex flex-col justify-top item-center md:items-start ml-4 mr-4">
+                            <h1 className="text-1xl text-secondary font-semibold flex justify-center md:justify-start">{item.name}</h1>
                             {/* <p className="text-xs text-gray-600">{item.description}</p>
                             <p className="text-xs text-gray-600">{item.altName}</p> */}
-                            <p className="text-xs text-gray-600">{item.productId}</p>
-                            <div className="w-full flex justify-between">
+                            <p className="text-xs text-gray-600 flex justify-center md:justify-start">{item.productId}</p>
+                            <div className="w-full flex flex-col md:flex-row md:justify-between items-center">
                                 {item.labelledPrice > item.price ? (
                                     <div>
-                                        <span className="text-lg font-semibold text-secondary">Rs.{item.price.toFixed(2)}</span>
+                                        <span className="text-lg font-semibold text-secondary ">Rs.{item.price.toFixed(2)}</span>
                                         <span className="text-md mx-2 text-gray-500 line-through">Rs.{item.labelledPrice.toFixed(2)}</span>
                                     </div>
                                 ) : (
@@ -134,7 +134,7 @@ export default function CheckOutPage() {
                             </div>
                         </div>
 
-                        <div className="w-[100px] h-[100px] flex flex-col justify-between items-end space-y-2">
+                        <div className="w-[100px] h-[100px] flex flex-col justify-between items-center md:items-end space-y-2">
                             <button className="text-2xl hover:bg-red-600 hover:text-white rounded-full"
                                 onClick={() => removeFromCart(index)}><BiTrash />
                             </button>
@@ -150,7 +150,7 @@ export default function CheckOutPage() {
             </div>
 
             {/* Summary Section */}
-            <div className="bg-gray-100 w-[33%] h-full flex flex-col rounded-md p-8">
+            <div className="bg-gray-100 w-full md:w-[33%] h-full mt-4 md:mt-0 mb-4 md:mb-0 flex flex-col rounded-md p-8">
                 <h1 className="text-2xl font-semibold text-gray-900">Summary</h1>
                 <div className="pt-8 space-y-2">
                     <SummaryRow label="Total Items" value={cart.length} />

@@ -19,7 +19,7 @@ export default function CartPage() {
 
 
     return (
-        <div className="bg-gray-200 w-full md:h-full flex flex-col md:flex-row justify-between items-center md:pl-25 md:pr-25 pt-1 md:pt-4 pb-1 md:pb-4">
+        <div className="bg-gray-200 w-[95%] md:w-full md:h-full flex flex-col md:flex-row justify-between items-center md:pl-25 md:pr-25 pt-1 md:pt-4 pb-1 md:pb-4">
 
             {/* Cart Items */}
             <div className="bg-gray-100 w-[95%] md:w-[65%] md:h-full flex flex-col items-left rounded-md p-1 md:p-6 md:overflow-y-scroll">
@@ -50,7 +50,7 @@ export default function CartPage() {
                                             <h1 className="text-1xl text-secondary font-semibold flex justify-center md:justify-start">{item.name}</h1>
                                             <h1 className="text-sm text-gray-600 font-normal flex justify-center md:justify-start">{item.productId}</h1>
                                         </div>
-                                        <div className="w-full flex justify-between items-bottom">
+                                        <div className="w-full flex flex-col md:flex-row md:justify-between items-center">
                                             {
                                                 item.labelledPrice > item.price ?
                                                     <div>
@@ -103,10 +103,9 @@ export default function CartPage() {
             </div>
 
             {/* Summary */}
-            <div className="bg-gray-100 w-[95%] md:w-[33%] h-full mt-4 md:mt-0 mb-4 md:mb-0
-             flex flex-col rounded-md p-8">
+            <div className="bg-gray-100 w-[95%] md:w-[33%] h-full mt-4 md:mt-0 mb-4 md:mb-0flex flex-col rounded-md p-8">
                 <h1 className="text-2xl font-semibold text-gray-900">Summary</h1>
-                <div className="w-full flex justify-between pt-8">
+                <div className="w- full flex justify-between pt-8">
                     <p className="text-sm font-normal text-gray-400">Total Items:</p>
                     <p className="text-sm font-normal text-gray-900"> {cart.length}</p>
                 </div>
