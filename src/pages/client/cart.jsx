@@ -19,14 +19,14 @@ export default function CartPage() {
 
 
     return (
-        <div className="bg-gray-200 w-full h-full flex justify-between items-center pl-25 pr-25 pt-4 pb-4">
+        <div className="bg-gray-200 w-full md:h-full flex flex-col md:flex-row justify-between items-center md:pl-25 md:pr-25 pt-1 md:pt-4 pb-1 md:pb-4">
 
             {/* Cart Items */}
-            <div className="bg-gray-100 w-[65%] h-full flex flex-col items-left rounded-md p-6 overflow-y-scroll">
+            <div className="bg-gray-100 w-[95%] md:w-[65%] md:h-full flex flex-col items-left rounded-md p-1 md:p-6 md:overflow-y-scroll">
                 {
                     cart.map((item) => {
                         return (
-                            <div key={item.productId} className="w-[100%] h-[115px] bg-white my-1 rounded-md flex justify-between items-center p-2">
+                            <div key={item.productId} className="w-[100%] md:h-[115px] bg-white my-1 rounded-md flex flex-col md:flex-row justify-between items-center p-2">
                                 
                                 {/* Checkbox */}
                                 <div className="p-4">
@@ -39,16 +39,16 @@ export default function CartPage() {
                                 </div>
 
                                 {/* Product Image */}
-                                <div className="w-[15%] h-full">
+                                <div className="md:w-[15%] h-full">
                                     <img src={item.image[0]} className="w-[100px] h-[100px] object-cover rounded-md" />
                                 </div>
 
                                 {/* Product Details */}
-                                <div className="w-[65%] h-full flex flex-col justify-top items-start ml-4 mr-4">
-                                    <div className="w-full h-full flex flex-col justify-top items-start">
+                                <div className="w-full md:w-[65%] h-full flex flex-col justify-top item-center md:items-start ml-4 mr-4">
+                                    <div className="w-full h-full flex flex-col justify-top">
                                         <div>
-                                            <h1 className="text-1xl text-secondary font-semibold">{item.name}</h1>
-                                            <h1 className="text-sm text-gray-600 font-normal">{item.productId}</h1>
+                                            <h1 className="text-1xl text-secondary font-semibold flex justify-center md:justify-start">{item.name}</h1>
+                                            <h1 className="text-sm text-gray-600 font-normal flex justify-center md:justify-start">{item.productId}</h1>
                                         </div>
                                         <div className="w-full flex justify-between items-bottom">
                                             {
@@ -66,7 +66,7 @@ export default function CartPage() {
                                 </div>
 
                                 {/* Actions */}
-                                <div className="w-[100px] h-[100px] flex flex-col justify-top items-end space-y-4">
+                                <div className="w-[100px] h-[100px] flex flex-col justify-top items-center md:items-end space-y-4">
                                     <button className="text-2xl cusor-pointer hover:bg-red-600 hover:text-white rounded-full"
                                         onClick={() => {
                                         removeFromCart(item.productId)
@@ -94,6 +94,7 @@ export default function CartPage() {
                                             <BiPlus />
                                         </button>
                                     </div>
+                                    
                                 </div>
                             </div>
                         )
@@ -102,7 +103,8 @@ export default function CartPage() {
             </div>
 
             {/* Summary */}
-            <div className="bg-gray-100 w-[33%] h-full flex flex-col rounded-md p-8">
+            <div className="bg-gray-100 w-[95%] md:w-[33%] h-full mt-4 md:mt-0 mb-4 md:mb-0
+             flex flex-col rounded-md p-8">
                 <h1 className="text-2xl font-semibold text-gray-900">Summary</h1>
                 <div className="w-full flex justify-between pt-8">
                     <p className="text-sm font-normal text-gray-400">Total Items:</p>
@@ -129,6 +131,7 @@ export default function CartPage() {
                     <p className="text-lg font-semibold text-gray-900">Rs.{getEstimatedTotal().toFixed(2)}</p>
                 </div>
 
+                <div className="w-full flex justify-center">
                 <Link
                     to="/checkout"
                     state={{
@@ -136,10 +139,12 @@ export default function CartPage() {
                             ? cart.filter(item => selectedItems[item.productId])
                             : cart
                     }}
-                    className="bg-red-600 text-center text-white hover:bg-red-700 cursor-pointer text-white font-semibold py-2 px-4 rounded-md mt-8"
+                    className="w-full bg-red-600 text-center text-white hover:bg-red-700 cursor-pointer text-white font-semibold py-2 px-4 rounded-md mt-8"
                 >
                     Checkout
                 </Link>
+                </div>
+
 
                 <p className="text-sm font-semibold text-gray-600 mt-4">* Shipping and taxes are calculated at checkout.</p>
             </div>

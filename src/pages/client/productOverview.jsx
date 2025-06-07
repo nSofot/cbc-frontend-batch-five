@@ -32,13 +32,22 @@ export default function ProductOverview() {
     return (
         <>
             {status == "success" && (
-                <div className="w-full h-[99%] flex pl-25 pr-25 pt-4">
-                    <div className="w-[50%] h-full flex justify-center items-center">
+                <div className="w-full h-full flex flex-col md:flex-row">
+                    <h1 className="md:hidden my-8 w-full text-center text-2xl font-semibold text-secondary">{product.name}
+                        {
+                            product.altName.map((altName, index) => {
+                                return (
+                                    <span key={index} className="w-full text-center text-2xl font-semibold text-gray-600">{" | " + altName}</span>
+                                )
+                            })
+                        }
+                    </h1>
+                    <div className="w-full md:w-[50%] h-full flex justify-center items-center">
                         <ImageSlider images={product.image}/>
                     </div>
-                    <div className="w-[50%] h-full flex justify-center items-center">
+                    <div className="w-full md:w-[50%] h-full flex justify-center items-center">
                         <div className="w-[400px] h-[400px] flex flex-col item-center">
-                            <h1 className="w-full text-center text-2xl font-semibold text-secondary">{product.name}
+                            <h1 className="hidden md:block w-full text-center text-2xl font-semibold text-secondary">{product.name}
                                 {
                                     product.altName.map((altName, index) => {
                                         return (
@@ -61,8 +70,8 @@ export default function ProductOverview() {
                                 </div>
                                 :<span className="text-4xl text-center text-gray-900 mt-4">{"Rs." + product.price.toFixed(2)}</span>
                             }
-                            <div className="w-full flex justify-center item-center mt-10">
-                                <button className="w-full my-2 mx-4 cursor-pointer bg-green-600 text-sm text-white py-2 rounded-md hover:bg-green-700 active:bg-green-800"
+                            <div className="w-full flex flex-col md:flex-row justify-center item-center mt-10">
+                                <button className="md:w-full my-2 mx-4 cursor-pointer bg-green-600 text-sm text-white py-2 rounded-md hover:bg-green-700 active:bg-green-800"
                                 		onClick={() => {
 										navigate("/checkout", {
 											state: {
@@ -84,7 +93,7 @@ export default function ProductOverview() {
                                     Buy Now
                                 </button>
 
-                                <button className="w-full my-2 mx-4 cursor-pointer bg-blue-600 text-sm text-white py-2 rounded-md hover:bg-blue-700 active:bg-blue-800" onClick={()=>{
+                                <button className="md:w-full my-2 mx-4 cursor-pointer bg-blue-600 text-sm text-white py-2 rounded-md hover:bg-blue-700 active:bg-blue-800" onClick={()=>{
                                     addToCart(product, 1)
                                     toast.success("Added to cart")
                                     }}>Add to Cart

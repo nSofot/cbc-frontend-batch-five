@@ -12,6 +12,8 @@ export default function AdminOrdersPage() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeOrder, setActiveOrder] = useState(null);
+	const [statusUpdate, setStatusUpdate] = useState("");
+
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -35,7 +37,7 @@ export default function AdminOrdersPage() {
 				);
 				setIsLoading(false);
 			});
-	}, []);
+	}, [isLoading]);
 
 	function formatDate(dateString) {
 		return new Date(dateString).toLocaleDateString();
@@ -90,6 +92,12 @@ export default function AdminOrdersPage() {
 													? "bg-green-100 text-green-700"
 												: order.status.toLowerCase() === "pending"
 												? "bg-yellow-100 text-yellow-700"
+												: order.status.toLowerCase() === "cancelled"
+												? "bg-red-100 text-red-700"
+												: order.status.toLowerCase() === "returned"
+												? "bg-blue-100 text-blue-700"	
+												: order.status.toLowerCase() === "refunded"
+												? "bg-pink-100 text-pink-700"
 												: "bg-gray-100 text-gray-700"
 											}`}
 										>
@@ -127,11 +135,49 @@ export default function AdminOrdersPage() {
 												? "bg-green-100 text-green-700"
 											: activeOrder.status.toLowerCase() === "pending"
 											? "bg-yellow-100 text-yellow-700"
+											: activeOrder.status.toLowerCase() === "cancelled"
+											? "bg-red-100 text-red-700"
+											: activeOrder.status.toLowerCase() === "returned"
+											? "bg-blue-100 text-blue-700"
+											: activeOrder.status.toLowerCase() === "refunded"
+											? "bg-pink-100 text-pink-700"
 											: "bg-gray-100 text-gray-700"
 										}`}
 									>
 										Status: {activeOrder.status}
 									</span>
+
+									<select
+										value={statusUpdate}
+										onChange={async (e) => {
+											const updatedValue = e.target.value;
+											setStatusUpdate(updatedValue); // update local state
+											try {
+												const token = localStorage.getItem("token");
+												await axios.put(
+													import.meta.env.VITE_BACKEND_URL + "/api/order/" + activeOrder.orderId + "/" + updatedValue,
+													{},
+													{ headers: { Authorization: "Bearer " + token } }
+												);
+												toast.success("Status updated");
+												setIsLoading(true);
+												const updatedOrders = {...activeOrder};
+												updatedOrders.status = updatedValue;
+												setActiveOrder(updatedOrders);
+											} catch (e) {
+												toast.error(e.response?.data?.message || "Update failed");
+											}
+										}}
+										className="text-sm"
+									>
+										<option value="" >Change status</option>
+										<option value="pending">Pending</option>
+										<option value="delivered">Delivered</option>
+										<option value="cancelled">Cancelled</option>
+										<option value="returned">Returned</option>
+										<option value="refunded">Refunded</option>
+									</select>
+
 								</div>
 							</div>
 
