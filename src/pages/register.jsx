@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google"
 import { FcGoogle } from "react-icons/fc";
 
 
@@ -40,31 +40,31 @@ export default function RegisterPage() {
     }
 
 
-    // const googleLogin = useGoogleRegister({
-    //     onSuccess: async (response) => {
-    //     try {
-    //         const accessToken = response.access_token;
-    //         const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login/google`, {
-    //         accessToken,
-    //         });
+    const googleLogin  = useGoogleLogin({
+        onSuccess: async (response) => {
+        try {
+                const accessToken = response.access_token;
+                const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/create-google`, {
+                accessToken,
+            });
 
-    //         toast.success("Register Successful");
-    //         const token = res.data.token;
-    //         localStorage.setItem("token", token);
+            toast.success("Register Successful");
+            const token = res.data.token;
+            localStorage.setItem("token", token);
 
-    //         if (res.data.role === "admin") {
-    //         navigate("/admin/");
-    //         } else {
-    //         navigate("/");
-    //         }
-    //     } catch (error) {
-    //         toast.error(error?.response?.data?.message || "Google register failed");
-    //     }
-    //     },
-    //     onError: () => {
-    //     toast.error("Google register failed");
-    //     },
-    // });
+            if (res.data.role === "admin") {
+                navigate("/admin/");
+            } else {
+                navigate("/");
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "Google register failed");
+        }
+        },
+            onError: () => {
+            toast.error("Google register failed");
+        },
+    });
 
     return (
         <div className="w-full h-screen bg-[url('/login-background.jpg')] flex justify-evenly items-center">
@@ -113,7 +113,7 @@ export default function RegisterPage() {
                     <p className="mb-4 text-sm text-gray-700">or</p>
 
                     <button
-                        // onClick={googleRegister}
+                        onClick={googleLogin}
                         className="w-[300px] h-[40px] flex items-center gap-4 justify-center gap-2 text-purple-600 font-semibold border border-purple-600 hover:text-white hover:bg-purple-700 active:bg-purple-800 rounded-md transition"
                     >
                         <FcGoogle className="text-2xl" />

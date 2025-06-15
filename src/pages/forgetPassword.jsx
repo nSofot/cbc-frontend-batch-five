@@ -20,12 +20,17 @@ export default function ForgetPasswordPage(){
             toast.success("OTP sent to your email check your inbox")
             console.log(response.data)
         }).catch((error)=>{
-            console.error(error)
+            toast.error("Email not found")
         })
     }
 
     function verifyOtp(){
         const otpInNumberFormat = parseInt(otp, 10);
+        if (newPassword !== confirmPassword) {
+            toast.error("Passwords do not match");
+            return;
+        }
+        
         axios.post(import.meta.env.VITE_BACKEND_URL+"/api/user/reset-password", {
             email: email,
             otp: otpInNumberFormat,
@@ -54,7 +59,6 @@ export default function ForgetPasswordPage(){
 
 
             <div className="w-[95%] md:w-[50%] h-full flex justify-center items-center">
-                {/* <div className="w-[400px] h-auto py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center"> */}
                    
                     {
                         otpSent?
@@ -83,7 +87,7 @@ export default function ForgetPasswordPage(){
                             <button 
                                 className="w-[300px] h-[40px] text-white font-semibold bg-purple-600 hover:bg-purple-700 active:bg-purple-800 rounded-md mb-4 transition" 
                                 onClick={verifyOtp}>
-                                Verify OTP
+                                Reset Password
                             </button>
                             {/* resend otp button that sets sentOtp false */}
                             <button 
@@ -110,7 +114,6 @@ export default function ForgetPasswordPage(){
                         </div>
 
                     }
-                {/* </div> */}
             </div>
         </div>
     )
