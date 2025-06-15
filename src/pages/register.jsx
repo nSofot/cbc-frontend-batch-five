@@ -70,50 +70,55 @@ export default function RegisterPage() {
         <div className="w-full h-screen bg-[url('/login-background.jpg')] flex justify-evenly items-center">
             <div className="w-[50%] h-full">
             </div>
-            <div className="w-[50%] h-full flex justify-center items-center">
-                <div className="w-[400px] h-[600px] backdrop-blur-md rounded-[20px] shadow-xl flex flex-col justify-center">
+
+            <div className="w-[95%] md:w-[50%] h-full flex justify-center items-center">
+                <div className="w-[400px] h-auto py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center">
+                    <h2 className="text-2xl font-semibold text-white mb-8">Register New Account</h2>
+
                     <input
                         type="text"
                         placeholder="First Name"
                         value={firstname}
                         onChange={(e) => setFirstname(e.target.value)}
-                        className="w-[300px] h-[40px] border-white rounded-[5px] mt-[30px] ml-[50px] bg-green-50"
+                        className="w-[300px] h-[40px] px-3 rounded-md border border-white bg-green-50 mb-5 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     />
                     <input
                         type="text"
                         placeholder="Last Name"
                         value={lastname}
                         onChange={(e) => setLastname(e.target.value)}
-                        className="w-[300px] h-[40px] border-white rounded-[5px] mt-[20px] ml-[50px] bg-green-50"
+                        className="w-[300px] h-[40px] px-3 rounded-md border border-white bg-green-50 mb-5 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     />
                     <input
                         type="email"
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-[300px] h-[40px] border-white rounded-[5px] mt-[20px] ml-[50px] bg-green-50"
+                        className="w-[300px] h-[40px] px-3 rounded-md border border-white bg-green-50 mb-5 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     />
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-[300px] h-[40px] border-white rounded-[5px] mt-[20px] ml-[50px] bg-green-50"
+                        className="w-[300px] h-[40px] px-3 rounded-md border border-white bg-green-50 mb-5 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     />
                     <button
                         onClick={handleRegister}
-                        className="w-[300px] h-[40px] text-white font-bold bg-green-500 border-white rounded-[5px] mt-[30px] ml-[50px] my-[20px]"
+                        className="w-[300px] h-[40px] text-white font-semibold bg-purple-600 hover:bg-purple-700 active:bg-purple-800 rounded-md mb-4 transition"
                     >
                         Register
                     </button>
 
-                <button
-                    // onClick={googleRegister}
-                    className="w-[300px] h-[40px] flex items-center gap-4 justify-center gap-2 text-green-600 font-semibold border border-green-600 hover:text-white hover:bg-green-700 rounded-md transition"
-                >
-                    <FcGoogle className="text-2xl" />
-                    <span>Register with Google</span>
-                </button>
+                    <p className="mb-4 text-sm text-gray-700">or</p>
+
+                    <button
+                        // onClick={googleRegister}
+                        className="w-[300px] h-[40px] flex items-center gap-4 justify-center gap-2 text-purple-600 font-semibold border border-purple-600 hover:text-white hover:bg-purple-700 active:bg-purple-800 rounded-md transition"
+                    >
+                        <FcGoogle className="text-2xl" />
+                        <span>Register with Google</span>
+                    </button>
 
                 </div>
             </div>
