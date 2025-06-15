@@ -2,6 +2,9 @@ import axios from 'axios'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { useGoogleLogin } from "@react-oauth/google";
+import { FcGoogle } from "react-icons/fc";
+
 
 export default function RegisterPage() {
     const [firstname, setFirstname] = useState("")
@@ -10,6 +13,7 @@ export default function RegisterPage() {
     const [password, setPassword] = useState("")
 
     const navigate = useNavigate()
+
 
     async function handleRegister() {
         if (!firstname || !lastname || !email || !password) {
@@ -34,6 +38,33 @@ export default function RegisterPage() {
             toast.error(e?.response?.data?.message || "Registration failed")
         }
     }
+
+
+    // const googleLogin = useGoogleRegister({
+    //     onSuccess: async (response) => {
+    //     try {
+    //         const accessToken = response.access_token;
+    //         const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login/google`, {
+    //         accessToken,
+    //         });
+
+    //         toast.success("Register Successful");
+    //         const token = res.data.token;
+    //         localStorage.setItem("token", token);
+
+    //         if (res.data.role === "admin") {
+    //         navigate("/admin/");
+    //         } else {
+    //         navigate("/");
+    //         }
+    //     } catch (error) {
+    //         toast.error(error?.response?.data?.message || "Google register failed");
+    //     }
+    //     },
+    //     onError: () => {
+    //     toast.error("Google register failed");
+    //     },
+    // });
 
     return (
         <div className="w-full h-screen bg-[url('/login-background.jpg')] flex justify-evenly items-center">
@@ -75,6 +106,15 @@ export default function RegisterPage() {
                     >
                         Register
                     </button>
+
+                <button
+                    // onClick={googleRegister}
+                    className="w-[300px] h-[40px] flex items-center gap-4 justify-center gap-2 text-green-600 font-semibold border border-green-600 hover:text-white hover:bg-green-700 rounded-md transition"
+                >
+                    <FcGoogle className="text-2xl" />
+                    <span>Register with Google</span>
+                </button>
+
                 </div>
             </div>
         </div>
