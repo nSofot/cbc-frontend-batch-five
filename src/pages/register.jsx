@@ -67,13 +67,17 @@ export default function RegisterPage() {
     });
 
     return (
-        <div className="w-full h-screen bg-[url('/login-background.jpg')] flex justify-evenly items-center">
-            <div className="w-[50%] h-full">
+        <div className="w-full h-screen bg-[url('/login-background.jpg')] bg-cover bg-center flex justify-center gap-12 items-center">
+            <div className="w-[600px] h-[500px] rounded-2xl">
+                <img
+                    src="/login-image3.jpg"
+                    alt="Login Background"
+                    className="w-full h-full object-cover rounded-2xl shadow-2xl"
+                /> 
             </div>
 
-            <div className="w-[95%] md:w-[50%] h-full flex justify-center items-center">
-                <div className="w-[400px] h-auto py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center">
-                    <h2 className="text-2xl font-semibold text-white mb-8">Register New Account</h2>
+                <div className="w-[400px] h-[500px] py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center">
+                    <h2 className="text-2xl font-semibold text-purple-600 mb-8">Register New Account</h2>
 
                     <input
                         type="text"
@@ -121,7 +125,7 @@ export default function RegisterPage() {
                     </button>
 
                 </div>
-            </div>
+
         </div>
     )
 }

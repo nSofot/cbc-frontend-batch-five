@@ -46,24 +46,24 @@ export default function ForgetPasswordPage(){
     }
 
     return(
-        <div className="w-full h-screen bg-[url('/login-background.jpg')] bg-cover bg-center flex justify-evenly items-center">
-            <div className="hidden md:block md:w-[50%] h-full flex justify-center items-center">
-                {/* <div className="w-[300px] h-[300px] py-1 px-1 rounded-2xl shadow-2xl">
-                    <img
-                        src="/login-background.jpg"
-                        alt="Login Background"
-                        className="w-full h-full object-cover"
-                    />
-                </div> */}
-            </div>
+        <div className="w-full h-screen bg-[url('/login-background.jpg')] bg-cover bg-center flex justify-center gap-12 items-center">
+            {/* <div className="hidden md:block md:w-[50%] h-full flex justify-center items-center"> */}
+                 <div className="w-[600px] h-[500px] rounded-2xl shadow-2xl">
+                     <img
+                        src="/login-image3.jpg"
+                        alt="Login Image"
+                        className="w-full h-full object-cover rounded-2xl shadow-2xl"
+                    /> 
+                </div> 
+            {/* </div> */}
 
 
-            <div className="w-[95%] md:w-[50%] h-full flex justify-center items-center">
+            {/* <div className="w-[95%] md:w-[50%] h-full flex justify-center items-center"> */}
                    
                     {
                         otpSent?
-                        <div className="w-[400px] h-auto py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center">
-                             <h2 className="text-2xl font-semibold text-white mb-8">Reset Password</h2>
+                        <div className="w-[400px] h-[500px] py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center">
+                             <h2 className="text-2xl font-semibold text-purple-600 mb-8">Reset Password</h2>
                             <input 
                                 type="text"
                                 placeholder="Enter your OTP" 
@@ -97,8 +97,8 @@ export default function ForgetPasswordPage(){
                             </button>
                         </div>:
 
-                        <div className="w-[400px] h-auto py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center">
-                            <h2 className="text-2xl font-semibold text-white mb-8">Reset Password</h2>
+                        <div className="w-[400px] h-[500px] py-10 px-5 backdrop-blur-md bg-white/30 rounded-2xl shadow-2xl flex flex-col justify-center items-center">
+                            <h2 className="text-2xl font-semibold text-purple-600 mb-8">Reset Password</h2>
                             <input 
                                 type="email" 
                                 placeholder="Enter your email" 
@@ -114,7 +114,7 @@ export default function ForgetPasswordPage(){
                         </div>
 
                     }
-            </div>
+            {/* </div> */}
         </div>
     )
 }
