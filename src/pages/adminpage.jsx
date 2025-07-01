@@ -1,13 +1,45 @@
 import { Route, Routes, Link, useLocation } from "react-router-dom";
-
 import AdminProductsPage from "./admin/adminProductPage";
 import AddProductPage from "./admin/addProductPage";
 import EditProductPage from "./admin/editProductPage";
 import AdminOrdersPage from "./admin/adminOrdersPage";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import Loading from "../components/loadingSpinner";
 
 export default function AdminPage() {
     const location = useLocation();
     const path = location.pathname;
+    const [status, setStatus] = useState("loading");
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setStatus("unauthenticated");
+            window.location.href = "/login";
+        } else {
+            axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }).then((response) => {
+                if(response.data.role !== "admin") {
+                    setStatus("unauthorized");
+                    toast.error("You are not authorized to access this page.");
+                    window.location.href = "/";
+                } else {
+                    setStatus("authenticated");
+                }
+            }).catch((error) => {
+                console.error(error);
+                setStatus("unauthenticated");
+                toast.error("You are not authenticated. Please login.");
+                window.location.href = "/login";
+            });
+        }
+    }, [status]);
+    
 
     function getClass(name){
         if(path.includes(name)){
@@ -20,7 +52,9 @@ export default function AdminPage() {
 
     return (
         <div className="w-full h-screen bg-purple-600 flex flex-col font-sans">
-
+        {status === "loading"?
+            <Loading/>:
+            <> 
             {/* Main Content */}
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar */}
@@ -72,6 +106,8 @@ export default function AdminPage() {
                     </Routes>
                 </div>
             </div>
+        </>
+        }
         </div>
     );
 }

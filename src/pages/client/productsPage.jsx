@@ -9,6 +9,7 @@ export default function ProductPage() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [query, setQuery] = useState("");
 
+	
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
