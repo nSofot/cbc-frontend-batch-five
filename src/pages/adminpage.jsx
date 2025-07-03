@@ -26,7 +26,7 @@ export default function AdminPage() {
 					},
 				})
 				.then((response) => {
-					if (response.data.role !== "admin") {
+					if (response.data.role !== "Admin") {
 						setStatus("unauthorized");
 						toast.error("You are not authorized to access this page");
 						window.location.href = "/";
@@ -40,8 +40,7 @@ export default function AdminPage() {
 					toast.error("You are not authenticated, please login");
 					window.location.href = "/login";
 				});
-		}
-console.log(status)        
+		}        
 	}, [status]);
     
 
