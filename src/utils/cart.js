@@ -44,7 +44,7 @@ export function addToCart(product, qty){
         }
     }
     else{
-        const newQty = cart[index].qty + qty;
+        let newQty = cart[index].qty + qty;
         if(newQty <= 0){
             // removeFromCart(product.productId)
             newQty = 0
