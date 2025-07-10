@@ -40,8 +40,8 @@ export default function LoginPage() {
 
 
     async function handleLogin() {
-    try {
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {
             email,
             password,
         });

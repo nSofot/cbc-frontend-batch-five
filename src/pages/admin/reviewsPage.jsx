@@ -1,10 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import axios from "axios";
 import {
   FaStar,
   FaRegStar,
   FaRegSadCry,
-  FaRegSmile,
   FaRegMeh
 } from "react-icons/fa";
 import {
@@ -13,34 +12,21 @@ import {
   FiTrash2,
   FiChevronDown,
   FiSearch,
-  FiLoader
+  FiLoader,
+  FiFilter
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
 
-/**
- * =========================================
- *  Admin ‑ Product Reviews Page
- * =========================================
- *  ▸ Lists all customer reviews with filters, search & sort
- *  ▸ Allows moderators to Approve / Reject / Delete reviews
- *  ▸ Tailwind CSS + Framer Motion animations
- *  ▸ Axios for API calls (set VITE_BACKEND_URL)
- *  ▸ Replace endpoints to match your backend
- * =========================================
- */
-
 export default function ReviewsPage() {
-  /* ---------------------------- state ---------------------------- */
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [statusFilter, setStatusFilter] = useState("all"); // all | pending | approved | rejected
+  const [showStatus, setShowStatus] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("all");
   const [search, setSearch] = useState("");
-  const [sortDir, setSortDir] = useState("desc"); // asc | desc (by createdAt)
+  const [sortDir, setSortDir] = useState("desc");
 
-  /* --------------------------- effects --------------------------- */
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -56,7 +42,6 @@ export default function ReviewsPage() {
     return () => (isMounted = false);
   }, []);
 
-  /* -------------------------- callbacks -------------------------- */
   const handleStatusChange = (id, newStatus) => {
     axios
       .patch(`${import.meta.env.VITE_BACKEND_URL}/api/reviews/${id}`, {
@@ -82,12 +67,9 @@ export default function ReviewsPage() {
       .catch(() => toast.error("Delete failed"));
   };
 
-  /* --------------------- derived (filter / sort) --------------------- */
   const filtered = useMemo(() => {
     let data = [...reviews];
-
     if (statusFilter !== "all") data = data.filter((r) => r.status === statusFilter);
-
     if (search.trim()) {
       const term = search.toLowerCase();
       data = data.filter(
@@ -97,34 +79,27 @@ export default function ReviewsPage() {
           r.comment.toLowerCase().includes(term)
       );
     }
-
     data.sort((a, b) =>
       sortDir === "asc"
         ? new Date(a.createdAt) - new Date(b.createdAt)
         : new Date(b.createdAt) - new Date(a.createdAt)
     );
-
     return data;
   }, [reviews, statusFilter, search, sortDir]);
 
-  /* ---------------------------- render --------------------------- */
   if (loading)
     return (
       <div className="flex justify-center items-center h-80 text-indigo-600 animate-spin">
         <FiLoader size={28} />
       </div>
     );
-  if (error)
-    return <p className="text-center text-red-600 py-10">{error}</p>;
+  if (error) return <p className="text-center text-red-600 py-10">{error}</p>;
 
   return (
     <section className="p-6 md:p-10">
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold">Product Reviews</h1>
-
-        {/* filters */}
         <div className="flex flex-wrap items-center gap-3 ml-auto">
-          {/* search */}
           <label className="relative">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -135,8 +110,6 @@ export default function ReviewsPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </label>
-
-          {/* status dropdown */}
           <div className="relative">
             <button
               className="flex items-center gap-1 px-4 py-2 rounded-full border text-sm shadow-sm hover:bg-gray-50"
@@ -146,17 +119,18 @@ export default function ReviewsPage() {
               {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
               <FiChevronDown />
             </button>
-            <StatusMenu
-              show={showStatus}
-              current={statusFilter}
-              onSelect={(v) => {
-                setStatusFilter(v);
-                setShowStatus(false);
-              }}
-            />
+            <AnimatePresence>
+              {showStatus && (
+                <StatusMenu
+                  current={statusFilter}
+                  onSelect={(v) => {
+                    setStatusFilter(v);
+                    setShowStatus(false);
+                  }}
+                />
+              )}
+            </AnimatePresence>
           </div>
-
-          {/* sort */}
           <button
             onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
             className="px-4 py-2 rounded-full border shadow-sm text-sm hover:bg-gray-50"
@@ -205,10 +179,6 @@ export default function ReviewsPage() {
   );
 }
 
-/* ===================================================================
- * Helper Components
- * =================================================================== */
-
 function Row({ review, onApprove, onReject, onDelete }) {
   return (
     <motion.tr
@@ -219,33 +189,25 @@ function Row({ review, onApprove, onReject, onDelete }) {
       transition={{ duration: 0.2 }}
       className="text-sm"
     >
-      {/* product */}
       <td className="px-6 py-4 whitespace-nowrap flex items-center gap-3 min-w-[200px]">
         <img
           src={review.productImage}
           alt={review.productName}
+          onError={(e) => (e.currentTarget.src = "/placeholder-product.png")}
           className="w-10 h-10 rounded object-cover border"
         />
         <span>{review.productName}</span>
       </td>
-
-      {/* reviewer */}
       <td className="px-6 py-4 whitespace-nowrap min-w-[160px]">
-        <p className="font-medium">{review.userName}</p>
-        <p className="text-gray-500 text-xs">{review.userEmail}</p>
+        <p className="font-medium">{review.userName || "Anonymous"}</p>
+        <p className="text-gray-500 text-xs">{review.userEmail || "N/A"}</p>
       </td>
-
-      {/* rating */}
       <td className="px-6 py-4 text-center">
         <Stars rating={review.rating} />
       </td>
-
-      {/* comment */}
       <td className="px-6 py-4 max-w-[280px] truncate" title={review.comment}>
         {review.comment}
       </td>
-
-      {/* date */}
       <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-500">
         {new Date(review.createdAt).toLocaleDateString(undefined, {
           year: "numeric",
@@ -253,13 +215,9 @@ function Row({ review, onApprove, onReject, onDelete }) {
           day: "numeric"
         })}
       </td>
-
-      {/* status */}
       <td className="px-6 py-4">
         <StatusBadge status={review.status} />
       </td>
-
-      {/* actions */}
       <td className="px-6 py-4 whitespace-nowrap text-right min-w-[140px] space-x-2">
         {review.status === "pending" && (
           <>
@@ -267,12 +225,7 @@ function Row({ review, onApprove, onReject, onDelete }) {
             <ActionButton icon={FiXCircle} label="Reject" onClick={onReject} />
           </>
         )}
-        <ActionButton
-          icon={FiTrash2}
-          label="Delete"
-          onClick={onDelete}
-          variant="danger"
-        />
+        <ActionButton icon={FiTrash2} label="Delete" onClick={onDelete} variant="danger" />
       </td>
     </motion.tr>
   );
@@ -283,7 +236,7 @@ function Stars({ rating }) {
     <div className="flex justify-center gap-px">
       {Array.from({ length: 5 }).map((_, i) => {
         if (rating >= i + 1) return <FaStar key={i} className="text-yellow-400" />;
-        if (rating > i && rating < i + 1) return <FaRegMeh key={i} className="text-yellow-400" />; // half star fallback
+        if (rating > i && rating < i + 1) return <FaRegMeh key={i} className="text-yellow-400" />;
         return <FaRegStar key={i} className="text-gray-300" />;
       })}
     </div>
@@ -297,9 +250,7 @@ function StatusBadge({ status }) {
     rejected: "bg-red-100 text-red-700"
   };
   return (
-    <span
-      className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${colors[status]}`}
-    >
+    <span className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${colors[status]}`}>
       {status}
     </span>
   );
@@ -319,29 +270,26 @@ function ActionButton({ icon: Icon, label, onClick, variant = "primary" }) {
   );
 }
 
-/*
- * Dropdown for status filter (primitive). Replace with Headless UI Listbox if preferred.
- */
-import { useState, useEffect, useRef } from "react";
-function StatusMenu({ show, current, onSelect }) {
+function StatusMenu({ current, onSelect }) {
   const menuRef = useRef(null);
   useEffect(() => {
-    if (!show) return;
     const handler = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) onSelect(current);
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        onSelect(current);
+      }
     };
     window.addEventListener("click", handler);
     return () => window.removeEventListener("click", handler);
-  }, [show, current, onSelect]);
+  }, [current, onSelect]);
 
-  if (!show) return null;
   const options = ["all", "pending", "approved", "rejected"];
+
   return (
     <motion.ul
       ref={menuRef}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
       className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-10"
     >
       {options.map((opt) => (

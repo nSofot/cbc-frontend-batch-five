@@ -81,19 +81,28 @@ export default function EditProductPage() {
 					<h1 className="text-xl font-semibold text-gray-800">✏️ Edit Product</h1>
 					<p className="text-sm text-gray-500">Update existing product information</p>
 				</div>
-				<Link
-					to="/admin/products"
-					className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow"
-				>
-					Cancel
-				</Link>
+				{/* Update Button */}
+				<div className="flex justify-end gap-6">
+					<button
+					onClick={updateProduct}
+					className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow-md transition duration-300"
+					>
+					Update Product
+					</button>
+					<Link
+						to="/admin/products"
+						className="bg-red-500 hover:bg-red-600 text-white px-10 py-2 rounded-md text-sm font-medium shadow"
+					>
+						Cancel
+					</Link>
+				</div>
 			</div>
 
 			<div className="bg-white w-full h-full px-10 py-6 shadow rounded-xl border border-gray-200 flex flex-col">
 
 				<div className=" flex justify-between">				
 					{/* Left Column */}
-					<div className="w-[55%] h-full space-y-6">
+					<div className="w-[55%] h-full space-y-10">
 
 						<div className="w-full flex justify-between">
 							{/* Product ID */}
@@ -186,10 +195,10 @@ export default function EditProductPage() {
 
 
 					{/* Right Column */}
-					<div className="w-[40%] h-full rounded-lg p-4 flex flex-col justify-between">
+					<div className="w-[40%] h-full rounded-lg flex flex-col justify-between">
 						{/* Existing Images */}
 						<p className="text-sm text-gray-700 font-medium mb-1">Existing Images</p>
-						<div className="w-full h-65 overflow-y-auto bg-white rounded-md shadow-inner">
+						<div className="w-full h-80 overflow-y-auto bg-white rounded-md shadow-inner">
 						{existingImages.length > 0 && (
 							<div className="space-y-2">
 								<div className="grid grid-cols-3 gap-3">
@@ -243,22 +252,8 @@ export default function EditProductPage() {
 							/>
 						</div>
 					</div>
-
 				</div>
-
-
-				{/* Update Button */}
-				<div className="flex justify-end pt-4">
-					<button
-					onClick={updateProduct}
-					className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-md transition duration-300"
-					>
-					Update Product
-					</button>
-				</div>
-
 			</div> 
 		</div>
-
 	);
 }

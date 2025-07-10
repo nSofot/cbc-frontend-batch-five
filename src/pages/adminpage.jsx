@@ -2,8 +2,9 @@ import { Route, Routes, Link, useLocation } from "react-router-dom";
 import AdminProductsPage from "./admin/adminProductPage";
 import AddProductPage from "./admin/addProductPage";
 import EditProductPage from "./admin/editProductPage";
+import UsersPage from "./admin/usersPage";
 import AdminOrdersPage from "./admin/adminOrdersPage";
-// import ReviewsPage from "./admin/reviewsPage";
+import ReviewsPage from "./admin/reviewsPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -15,23 +16,25 @@ export default function AdminPage() {
     const [status, setStatus] = useState("loading");
 
 	useEffect(() => {
-		const token = localStorage.getItem("token");
+		const token = localStorage.getItem("token");      
 		if (!token) {
 			setStatus("unauthenticated");
 			window.location.href = "/login";
-		} else {
-			axios
+		} else {          
+			const response = axios
 				.get(import.meta.env.VITE_BACKEND_URL + "/api/user/", {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
-				})
+				})              
 				.then((response) => {
-					if (response.data.role !== "Admin") {
+                     
+					if (response.data.role.toLowerCase() !== "admin") {
+                  
 						setStatus("unauthorized");
 						toast.error("You are not authorized to access this page");
-						window.location.href = "/";
-					} else {
+						window.location.href = "/";     
+                    } else {                      
 						setStatus("authenticated");
 					}
 				})
@@ -41,7 +44,7 @@ export default function AdminPage() {
 					toast.error("You are not authenticated, please login");
 					window.location.href = "/login";
 				});
-		}        
+		}             
 	}, [status]);
     
 
@@ -102,9 +105,9 @@ export default function AdminPage() {
                         <div className="h-full w-[calc(100%-256px)] border-purple-600 border-4 rounded-xl bg-white">
                             <Routes>
                                 <Route path="/products" element={<AdminProductsPage />} />
-                                <Route path="/users" element={<h1 className="text-xl font-semibold">Users</h1>} />
+                                <Route path="/users" element={<UsersPage />} />
                                 <Route path="/orders" element={<AdminOrdersPage />} />
-                                {/* <Route path="/reviews" element={<ReviewsPage />} /> */}
+                                <Route path="/reviews" element={<ReviewsPage />} />
                                 <Route path="/add-product" element={<AddProductPage />} />
                                 <Route path="/edit-product" element={<EditProductPage />} />
                             </Routes>

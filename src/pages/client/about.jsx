@@ -125,8 +125,8 @@ export default function About() {
       </section>
 
       {/* ---------- Call‑to‑action ---------- */}
-      <section className="bg-indigo-600 text-white py-16">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="w-full bg-indigo-600 text-white py-16">
+        <div className="max-w-full mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to experience CBC quality?
           </h2>

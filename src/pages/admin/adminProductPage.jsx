@@ -10,6 +10,7 @@ export default function AdminProductsPage() {
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
 	const location = useLocation();
+	const token = localStorage.getItem("token");
 
 	useEffect(() => {
 		window.scrollTo(0, 0);

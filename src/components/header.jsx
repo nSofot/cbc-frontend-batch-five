@@ -47,7 +47,7 @@ export default function Header() {
       {/* Right‑hand controls (desktop) */}
       <div className="w-[200px] hidden md:flex justify-center items-center">
         {isLoggedIn ? (
-          <button onClick={handleLogout} className="text-[20px] font-bold mx-2">
+          <button onClick={handleLogout} className="text-md font-bold mx-2">
             Logout
           </button>
         ) : (

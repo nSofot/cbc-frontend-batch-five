@@ -60,18 +60,28 @@ export default function AddProductPage() {
           <h1 className="text-xl font-semibold text-gray-800">🛒 Add New Product</h1>
           <p className="text-sm text-gray-500">Fill the product details to add it</p>
         </div>
-        <Link
-          to="/admin/products"
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow"
-        >
-          Cancel
-        </Link>
+        {/* Add Button */}
+            <div className="flex justify-end gap-6">
+                <button
+                  onClick={handleAddProduct}
+                  className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-smfont-medium shadow-md transition duration-300"
+                >
+                  Add Product
+                </button>
+            
+              <Link
+                to="/admin/products"
+                className="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded-md text-sm font-medium shadow"
+              >
+                Cancel
+              </Link>
+          </div>
       </div>
 
       <div className="bg-white w-full h-full px-10 py-6 shadow rounded-xl border border-gray-200 flex flex-col">
         <div className="flex justify-between">
           {/* Left Column */}
-          <div className="w-[55%] h-full space-y-6">
+          <div className="w-[55%] h-full space-y-10">
             <div className="w-full flex justify-between">
               <div className="w-[20%]">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Product ID</label>
@@ -151,9 +161,9 @@ export default function AddProductPage() {
           </div>
 
           {/* Right Column */}
-          <div className="w-[40%] h-full rounded-lg p-4 flex flex-col justify-between">
+          <div className="w-[40%] h-full rounded-lg flex flex-col justify-between">
             <p className="text-sm text-gray-700 font-medium mb-1">Selected Images</p>
-            <div className="w-full h-65 overflow-y-auto bg-white rounded-md shadow-inner">
+            <div className="w-full h-80 overflow-y-auto bg-white rounded-md shadow-inner">
               {image.length > 0 && (
                 <div className="space-y-2">
                   <div className="grid grid-cols-3 gap-3">
@@ -191,16 +201,6 @@ export default function AddProductPage() {
               />
             </div>
           </div>
-        </div>
-
-        {/* Add Button */}
-        <div className="flex justify-end pt-4">
-          <button
-            onClick={handleAddProduct}
-            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold shadow-md transition duration-300"
-          >
-            Add Product
-          </button>
         </div>
       </div>
     </div>
