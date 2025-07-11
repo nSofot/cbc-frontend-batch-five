@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { BsCart3 } from "react-icons/bs";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useEffect, useState } from "react";
+import { FaRegUser } from "react-icons/fa";
 
 export default function Header() {
   const [sideDrawerOpened, setSideDrawerOpened] = useState(false);
@@ -9,6 +10,7 @@ export default function Header() {
   const location = useLocation();
 
   const token = localStorage.getItem("token");
+  const cart = localStorage.getItem("cart");
   const isLoggedIn = Boolean(token);
 
   const handleLogout = () => {
@@ -46,16 +48,19 @@ export default function Header() {
 
       {/* Right‑hand controls (desktop) */}
       <div className="w-[200px] hidden md:flex justify-center items-center">
+        <FaRegUser className="cursor-pointer text-[25px] mr-2" />
         {isLoggedIn ? (
-          <button onClick={handleLogout} className="text-md font-bold mx-2">
+          <button onClick={handleLogout} className="cursor-pointer text-md font-bold mr-6">
             Logout
           </button>
         ) : (
-          <Link to="/login" className="text-[20px] font-bold mx-2">Login</Link>
+          <Link to="/login" className="cursor-pointer text-[20px] font-bold mr-6">Login</Link>
         )}
-        <Link to="/cart" className="text-[20px] font-bold mx-2">
-          <BsCart3 />
+       
+        <Link to="/cart" className="text-[20px] font-bold">
+          <BsCart3 className="text-[25px]" />
         </Link>
+         <span className="text-sm text-white bg-red-600 w-[20px] h-[20px] rounded-full flex items-center justify-center"> {cart ? JSON.parse(cart).length : ""}</span>
       </div>
 
       {/* Mobile side‑drawer */}
