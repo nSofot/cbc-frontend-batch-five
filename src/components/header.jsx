@@ -60,8 +60,8 @@ export default function Header() {
         <Link to="/cart" className="text-[20px] font-bold">
           <BsCart3 className="text-[25px]" />
         </Link>
-         <span className="text-sm text-white bg-red-600 w-[20px] h-[20px] rounded-full flex items-center justify-center"> {cart ? JSON.parse(cart).length : ""}</span>
-      </div>
+         <span className="text-sm text-white bg-white"> {cart ? JSON.parse(cart).length : "text-sm text-white bg-red-600 w-[20px] h-[20px] rounded-full flex items-center justify-center"}</span>
+      </div> 
 
       {/* Mobile side‑drawer */}
       <div
