@@ -12,6 +12,7 @@ export default function Header() {
   const token = localStorage.getItem("token");
   const cart = localStorage.getItem("cart");
   const isLoggedIn = Boolean(token);
+  const cartCount = cart ? JSON.parse(cart).length : 0;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -19,14 +20,16 @@ export default function Header() {
     navigate("/", { replace: true });
   };
 
-  // Close drawer whenever the route changes
-  useEffect(() => setSideDrawerOpened(false), [location.pathname]);
+  // Close side drawer on route change
+  useEffect(() => {
+    setSideDrawerOpened(false);
+  }, [location.pathname]);
 
   return (
-    <header className="w-full h-[80px] shadow-2xl flex justify-center relative">
-      {/* Hamburger (mobile) */}
+    <header className="w-full h-[80px] shadow-2xl flex justify-center relative bg-white z-50">
+      {/* Hamburger Icon (Mobile) */}
       <GiHamburgerMenu
-        className="h-full text-3xl md:hidden absolute left-2 cursor-pointer"
+        className="h-full text-3xl md:hidden absolute left-4 cursor-pointer"
         onClick={() => setSideDrawerOpened(true)}
       />
 
@@ -38,67 +41,80 @@ export default function Header() {
         onClick={() => navigate("/")}
       />
 
-      {/* Links (desktop) */}
+      {/* Desktop Nav Links */}
       <nav className="flex-1 hidden md:flex justify-center items-center">
-        <Link to="/"         className="text-[20px] font-bold mx-2">Home</Link>
-        <Link to="/products" className="text-[20px] font-bold mx-2">Products</Link>
-        <Link to="/about"    className="text-[20px] font-bold mx-2">About</Link>
-        <Link to="/contact"  className="text-[20px] font-bold mx-2">Contact</Link>
+        <Link to="/"         className="text-lg font-bold mx-3 hover:underline">Home</Link>
+        <Link to="/products" className="text-lg font-bold mx-3 hover:underline">Products</Link>
+        <Link to="/about"    className="text-lg font-bold mx-3 hover:underline">About</Link>
+        <Link to="/contact"  className="text-lg font-bold mx-3 hover:underline">Contact</Link>
       </nav>
 
-      {/* Right‑hand controls (desktop) */}
-      <div className="w-[200px] hidden md:flex justify-center items-center">
-        <FaRegUser className="cursor-pointer text-[25px] mr-2" />
-        {isLoggedIn ? (
-          <button onClick={handleLogout} className="cursor-pointer text-md font-bold mr-6">
-            Logout
-          </button>
-        ) : (
-          <Link to="/login" className="cursor-pointer text-[20px] font-bold mr-6">Login</Link>
-        )}
-       
-        <Link to="/cart" className="text-[20px] font-bold">
-          <BsCart3 className="text-[25px]" />
-        </Link>
-         <span className="text-sm text-white bg-white"> {cart ? JSON.parse(cart).length : "text-sm text-white bg-red-600 w-[20px] h-[20px] rounded-full flex items-center justify-center"}</span>
-      </div> 
+      {/* Desktop User + Cart */}
+      <div className="w-[200px] hidden md:flex justify-center items-center gap-4 pr-4">
+        <FaRegUser className="text-2xl cursor-pointer" />
 
-      {/* Mobile side‑drawer */}
+        {isLoggedIn ? (
+          <button onClick={handleLogout} className="text-md font-semibold text-red-600">Logout</button>
+        ) : (
+          <Link to="/login" className="text-md font-semibold text-blue-600">Login</Link>
+        )}
+
+        <div className="relative cursor-pointer">
+          <Link to="/cart">
+            <BsCart3 className="text-2xl" />
+          </Link>
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 text-xs text-white bg-red-600 w-[20px] h-[20px] rounded-full flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Side Drawer */}
       <div
-        className={`fixed inset-0 bg-black/60 flex md:hidden transition-opacity
-                    ${sideDrawerOpened ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-black/60 md:hidden transition-opacity duration-300 ${
+          sideDrawerOpened ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
         onClick={() => setSideDrawerOpened(false)}
       >
         <aside
-          className={`w-[350px] bg-white h-full shadow-xl transform transition-transform
-                      ${sideDrawerOpened ? 'translate-x-0' : '-translate-x-full'}`}
-          onClick={e => e.stopPropagation()}
+          className={`w-[280px] bg-white h-full shadow-xl transform transition-transform duration-300 ${
+            sideDrawerOpened ? "translate-x-0" : "-translate-x-full"
+          }`}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="w-full h-[80px] shadow-2xl flex items-center relative">
+          {/* Drawer Header */}
+          <div className="h-[80px] shadow flex items-center px-4">
             <GiHamburgerMenu
-              className="text-3xl absolute left-2 cursor-pointer"
+              className="text-3xl cursor-pointer"
               onClick={() => setSideDrawerOpened(false)}
             />
             <img
               src="/CBC-Logo.png"
               alt="Logo"
-              className="w-[80px] h-[80px] object-cover cursor-pointer mx-auto"
+              className="w-[60px] h-[60px] object-cover ml-auto cursor-pointer"
               onClick={() => navigate("/")}
             />
           </div>
 
-          <nav className="flex flex-col items-center gap-2 mt-4">
-            <Link to="/"         className="text-[20px] font-bold my-2">Home</Link>
-            <Link to="/products" className="text-[20px] font-bold my-2">Products</Link>
-            <Link to="/about"    className="text-[20px] font-bold my-2">About</Link>
-            <Link to="/contact"  className="text-[20px] font-bold my-2">Contact</Link>
-            <Link to="/cart"     className="text-[20px] font-bold my-2">
-              <BsCart3 />
+          {/* Drawer Nav */}
+          <nav className="flex flex-col items-start px-6 gap-4 mt-6">
+            <Link to="/"         className="text-lg font-bold" onClick={() => setSideDrawerOpened(false)}>Home</Link>
+            <Link to="/products" className="text-lg font-bold" onClick={() => setSideDrawerOpened(false)}>Products</Link>
+            <Link to="/about"    className="text-lg font-bold" onClick={() => setSideDrawerOpened(false)}>About</Link>
+            <Link to="/contact"  className="text-lg font-bold" onClick={() => setSideDrawerOpened(false)}>Contact</Link>
+            <Link to="/cart"     className="text-lg font-bold" onClick={() => setSideDrawerOpened(false)}>
+              Cart <BsCart3 className="inline ml-2" />
             </Link>
             {isLoggedIn ? (
-              <button onClick={handleLogout} className="text-[20px] font-bold my-2">Logout</button>
+              <button onClick={handleLogout} className="text-lg font-bold text-red-600 mt-2">
+                Logout
+              </button>
             ) : (
-              <Link to="/login" className="text-[20px] font-bold my-2">Login</Link>
+              <Link to="/login" className="text-lg font-bold text-blue-600 mt-2">
+                Login
+              </Link>
             )}
           </nav>
         </aside>
