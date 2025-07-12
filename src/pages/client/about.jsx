@@ -22,7 +22,7 @@ export default function About() {
       </title>
 
       {/* ---------- Hero ---------- */}
-      <section className="relative h-[50vh] bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[50vh] bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center overflow-hidden">
         <motion.img
           src="/about-hero.jpg"               /* <-- put any hero image in /public */
           alt="Our team at work"
