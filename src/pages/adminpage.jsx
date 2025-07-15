@@ -19,37 +19,36 @@ export default function AdminPage() {
   const navigate = useNavigate();
   const [status, setStatus] = useState("loading");
 
-  // Auth check
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (!token) {
       setStatus("unauthenticated");
-      window.location.href = "/login";
+      toast.error("Please login");
+      navigate("/login", { replace: true });
       return;
     }
 
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response) => {
-        if (response.data.role?.toLowerCase() !== "admin") {
+      .then((res) => {
+        const role = res.data.role?.toLowerCase();
+        if (role !== "admin") {
           setStatus("unauthorized");
-          toast.error("You are not authorized to access this page");
-          window.location.href = "/";
+          toast.error("Unauthorized access");
+          navigate("/", { replace: true });
         } else {
           setStatus("authenticated");
         }
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         setStatus("unauthenticated");
-        toast.error("You are not authenticated, please login");
-        window.location.href = "/login";
+        toast.error("Session expired. Please login again");
+        navigate("/login", { replace: true });
       });
-  }, []);
+  }, [navigate]);
 
   const getClass = (name) =>
     path.includes(`/admin/${name}`)
@@ -59,12 +58,10 @@ export default function AdminPage() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.success("Logged out successfully");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
-  if (status === "loading" || status === "unauthenticated") {
-    return <Loading />;
-  }
+  if (status === "loading") return <Loading />;
 
   return (
     <div className="w-full h-screen bg-purple-600 flex flex-col font-sans">
@@ -80,7 +77,6 @@ export default function AdminPage() {
             <Link className={getClass("add-product")} to="/admin/add-product">➕ Add Product</Link>
           </div>
 
-          {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="mt-6 text-red-600 font-semibold px-3 py-2 rounded hover:bg-red-100 transition text-left"
@@ -92,7 +88,7 @@ export default function AdminPage() {
         {/* Page Content */}
         <main className="h-full w-[calc(100%-256px)] border-purple-600 border-4 rounded-xl bg-white overflow-y-auto">
           <Routes>
-            <Route path="" element={<Navigate to="products" replace />} />
+            <Route index element={<Navigate to="products" replace />} />
             <Route path="products" element={<AdminProductsPage />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="orders" element={<AdminOrdersPage />} />

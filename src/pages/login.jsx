@@ -12,11 +12,10 @@ export default function LoginPage() {
 
   // Google OAuth Login
   const googleLogin = useGoogleLogin({
-    onSuccess: async (response) => {
+    onSuccess: async ({ access_token }) => {
       try {
-        const accessToken = response.access_token;
         const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login/google`, {
-          accessToken,
+          accessToken: access_token,
         });
 
         toast.success("Login Successful");
@@ -31,13 +30,16 @@ export default function LoginPage() {
         toast.error(error?.response?.data?.message || "Google login failed");
       }
     },
-    onError: () => {
-      toast.error("Google login failed");
-    },
+    onError: () => toast.error("Google login failed"),
   });
 
   // Email/Password Login
   async function handleLogin() {
+    if (!email || !password) {
+      toast.error("Email and password are required");
+      return;
+    }
+
     try {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {
         email,
@@ -60,10 +62,10 @@ export default function LoginPage() {
   return (
     <div className="w-full h-screen bg-[url('/login-background.jpg')] bg-cover bg-center flex justify-center items-center gap-12">
       {/* Left image block */}
-      <div className="w-[600px] h-[500px] rounded-2xl shadow-2xl overflow-hidden">
+      <div className="w-[600px] h-[500px] rounded-2xl shadow-2xl overflow-hidden hidden md:block">
         <img
           src="/login-image3.jpg"
-          alt="Login Background"
+          alt="Login Visual"
           className="w-full h-full object-cover"
         />
       </div>
@@ -104,16 +106,10 @@ export default function LoginPage() {
         </button>
 
         <div className="flex justify-between items-center text-blue-800 gap-10 pt-4 pb-6">
-          <Link
-            to="/register"
-            className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
-          >
+          <Link to="/register" className="text-sm text-blue-600 hover:text-blue-800 hover:underline">
             Register New Account
           </Link>
-          <Link
-            to="/forget"
-            className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
-          >
+          <Link to="/forget" className="text-sm text-blue-600 hover:text-blue-800 hover:underline">
             Forgot Password?
           </Link>
         </div>
